@@ -34,7 +34,6 @@ function addOrEdit($tipo)
             break;
     }
 }
-include_once 'funciones.php';
 ?>
 <form class="container" method="get" action= <?= addOrEdit("action")?>>
     <input class="d-none" value="@if($bodega ?? '' != null){{$bodega->id}}@endif" name="bodega_id">
