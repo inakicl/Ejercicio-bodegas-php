@@ -1,7 +1,7 @@
 @extends('index')
 
 @section('content')
-    <a class="btn btn-primary mb-4" href="bodegas/add_bodegas?accion=anyadir"><i class="fas fa-plus"></i> Añadir
+    <a class="btn btn-primary mb-4" href="{{route('bodegas.create')}}?accion=anyadir"><i class="fas fa-plus"></i> Añadir
         bodega</a>
 
     <table class="table text-center">
@@ -22,9 +22,16 @@
                 <td>{{$values->email}}</td>
                 <!-- Acciones -->
                 <td>
-                    <a class="btn btn-outline-primary text-primary" href="bodegas/detalle/{{$values->id}}"><i class="fas fa-sign-in-alt"></i> Entrar</a>
-                    <a class="btn btn-outline-danger text-danger" href="bodegas/delete/{{$values->id}}"><i
-                            class="fas fa-trash-alt"></i> Borrar</a>
+                    <a class="btn btn-outline-primary text-primary"
+                       href="{{route('bodegas.show',['id'=>$values->id])}}"><i
+                            class="fas fa-sign-in-alt"></i> Entrar</a>
+                    <form method="POST" action="{{route('bodegas.destroy', ['id'=>$values->id])}}">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-outline-danger text-danger">
+                            <i class="fas fa-trash-alt"></i> Borrar
+                        </button>
+                    </form>
                 </td>
             </tr>
         @endforeach

@@ -10,12 +10,6 @@ use PHPUnit\Util\Json;
 class BodegaController extends Controller
 {
 
-    public function deleteRow($id)
-    {
-        DB::table('bodegas')->where('id', '=', $id)->delete();
-        return redirect('bodegas');
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +20,7 @@ class BodegaController extends Controller
         $bodegas = Bodega::all();
         //return $bodegas;
 
-        return view('bodegas', ['bodegas' => $bodegas]);
+        return view('bodegas.bodegas', ['bodegas' => $bodegas]);
     }
 
     /**
@@ -36,7 +30,7 @@ class BodegaController extends Controller
      */
     public function create()
     {
-        //
+        return view('bodegas.add_bodega');
     }
 
     /**
@@ -58,7 +52,7 @@ class BodegaController extends Controller
                 'if_hotel' => $request->hotel_radio,
             ]
         );
-        return redirect('bodegas');
+        return redirect()->route('bodegas.index');
 
     }
 
@@ -73,9 +67,7 @@ class BodegaController extends Controller
 
         $bodega = Bodega::find($id);
         $vinos = $bodega->vinos;
-        //return $vinos;
-
-        return view('detalle_bodegas', ['bodega' => $bodega, 'vinos' => $vinos]);
+        return view('bodegas.detalle_bodegas', ['bodega' => $bodega, 'vinos' => $vinos]);
     }
 
     /**
@@ -86,7 +78,7 @@ class BodegaController extends Controller
      */
     public function edit(Bodega $bodega)
     {
-        return view('add_bodega');
+        //
     }
 
     /**
@@ -109,7 +101,7 @@ class BodegaController extends Controller
                 'if_restaurante' => $request->rest_radio,
                 'if_hotel' => $request->hotel_radio,
             ]);
-        return redirect('/bodegas/detalle/' . $request->bodega_id);
+        return redirect()->route('bodegas.show', ['id' => $request->bodega_id]);
     }
 
     /**
@@ -118,8 +110,9 @@ class BodegaController extends Controller
      * @param \App\Bodega $bodega
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bodega $bodega)
+    public function destroy(int $id)
     {
-        //
+        DB::table('bodegas')->where('id', '=', $id)->delete();
+        return redirect()->route('bodegas.index');
     }
 }

@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\DB;
 
 class VinoController extends Controller
 {
-    public function deleteRow(int $vinoId, int $bodegaId)
-    {
-        DB::table('vinos')->where('id', '=', $vinoId)->delete();
-        return redirect('bodegas/detalle/' . $bodegaId);
-    }
 
     /**
      * Display a listing of the resource.
@@ -30,9 +25,10 @@ class VinoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(int $bodegaId)
     {
-        //
+        $bodega = Bodega::find($bodegaId);
+        return view('vinos.add_vino', ["bodega" => $bodega]);
     }
 
     /**
@@ -52,7 +48,7 @@ class VinoController extends Controller
                 'bodega_id' => $request->bodega_id
             ]
         );
-        return redirect('bodegas/detalle/' . $request->bodega_id);
+        return redirect()->route('bodegas.show', ['id' => $request->bodega_id]);
     }
 
     /**
@@ -64,7 +60,7 @@ class VinoController extends Controller
     public function show(int $bodegaId, int $vinoId)
     {
         $vino = Vino::find($vinoId);
-        return view('detalle_vino', ['bodega' => $bodegaId, 'vino' => $vino]);
+        return view('vinos.detalle_vino', ['bodega' => $bodegaId, 'vino' => $vino]);
     }
 
     /**
@@ -73,10 +69,9 @@ class VinoController extends Controller
      * @param \App\Vino $vino
      * @return \Illuminate\Http\Response
      */
-    public function edit(int $bodegaId)
+    public function edit()
     {
-        $bodega = Bodega::find($bodegaId);
-        return view('add_vino', ["bodega" => $bodega]);
+        //
     }
 
     /**
@@ -96,7 +91,7 @@ class VinoController extends Controller
                 'alcohol' => $request->alcohol,
                 'tipo_de_vino' => $request->tipo_vino
             ]);
-        return redirect('/bodegas/detalle/' . $request->bodega_id);
+        return redirect()->route('bodegas.show', ['id' => $request->bodega_id]);
     }
 
     /**
@@ -105,8 +100,9 @@ class VinoController extends Controller
      * @param \App\Vino $vino
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vino $vino)
+    public function destroy(int $vinoId, int $bodegaId)
     {
-        //
+        DB::table('vinos')->where('id', '=', $vinoId)->delete();
+        return redirect()->route('bodegas.show', ['id' => $bodegaId]);
     }
 }

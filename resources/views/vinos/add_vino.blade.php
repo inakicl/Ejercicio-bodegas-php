@@ -2,14 +2,14 @@
 @section('barra_datos')
     <div class="row ml-5 mr-5 form-group">
         <h4 class="col-10">Nuevo vino</h4>
-        <a class="btn btn-info text-white col-2" href="/bodegas/detalle/{{$bodega->id}}">Volver</a>
+        <a class="btn btn-info text-white col-2" href="{{route('bodegas.show',['id'=>$bodega->id])}}">Volver</a>
     </div>
 @endsection
 
 @section('content')
 
-    <form class="container" method="get" action="/vino/add">
-
+    <form class="container" method="get" action="{{route('vinos.store')}}">
+        @csrf
         <input class="d-none" value="{{$bodega->id}}" name="bodega_id">
 
         <div class="row ">

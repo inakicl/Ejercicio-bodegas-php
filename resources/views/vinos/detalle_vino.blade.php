@@ -16,16 +16,22 @@ function ifEditar()
         <div class="row">
             <h4 class="col-7">Datos bodega</h4>
             <a class="btn btn-outline-warning " href="?accion=editar"><i class="fas fa-edit"></i>Editar</a>
-            <a class="btn btn-outline-primary " href="/bodegas/detalle/{{$bodega}}"><i class="fas fa-arrow-left"></i>Volver</a>
-            <a class="btn btn-outline-danger " href="/vino/delete/{{$vino->id}}/{{$bodega}}"><i
-                    class="fas fa-trash-alt"></i>Eliminar</a>
+            <a class="btn btn-outline-primary " href="{{route('bodegas.show',['id'=>$bodega])}}">
+                <i class="fas fa-arrow-left"></i>Volver</a>
+            <form method="POST" action="{{route('vinos.destroy',['vinoId'=>$vino->id,'bodegaId'=>$bodega])}}">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-outline-danger">
+                    <i class="fas fa-trash-alt"></i>Eliminar
+                </button>
+            </form>
         </div>
     </div>
 @endsection
 
 @section('content')
 
-    <form class="container" method="get" action="/vino/update">
+    <form class="container" method="get" action="{{route('vinos.update')}}">
 
         <input class="d-none" value="{{$bodega}}" name="bodega_id">
         <input class="d-none" value="{{$vino->id}}" name="vino_id">
